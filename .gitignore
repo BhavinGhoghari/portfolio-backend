@@ -6,3 +6,4 @@ uploads/*.png
 uploads/*.pdf
 *.log
 seed.js
+.gitignore
