@@ -1,9 +1,9 @@
-const router = require('express').Router();
-const Profile = require('../models/Profile');
-const auth = require('../middleware/auth');
+const router = require("express").Router();
+const Profile = require("../models/Profile");
+const auth = require("../middleware/auth");
 
 // GET /api/profile  (public)
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const profile = await Profile.findOne();
     res.json({ success: true, profile });
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 // PUT /api/profile  (admin only)
-router.put('/', auth, async (req, res) => {
+router.put("/", auth, async (req, res) => {
   try {
     let profile = await Profile.findOne();
     if (profile) {
