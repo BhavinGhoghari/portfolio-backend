@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-// ── Core Middleware
+//Core Middleware
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -43,26 +43,32 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ── Rate Limiting
+// Rate Limiting
 const rateLimit = require("./middleware/rateLimit");
 const strictLimit = rateLimit(5, 60 * 1000);
 const contactLimit = rateLimit(3, 60 * 1000);
 const apiLimit = rateLimit(60, 60 * 1000);
 
-// ── Routes
-app.use("/api/auth", strictLimit, require("./routes/auth"));
-app.use("/api/profile", apiLimit, require("./routes/profile"));
-app.use("/api/projects", apiLimit, require("./routes/projects"));
-app.use("/api/skills", apiLimit, require("./routes/skills"));
-app.use("/api/experience", apiLimit, require("./routes/experience"));
-app.use("/api/messages", contactLimit, require("./routes/messages"));
+// Routes
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/profile", require("./routes/profile"));
+app.use("/api/projects", require("./routes/projects"));
+app.use("/api/skills", require("./routes/skills"));
+app.use("/api/experience", require("./routes/experience"));
+app.use("/api/messages", require("./routes/messages"));
+// app.use("/api/auth", strictLimit, require("./routes/auth"));
+// app.use("/api/profile", apiLimit, require("./routes/profile"));
+// app.use("/api/projects", apiLimit, require("./routes/projects"));
+// app.use("/api/skills", apiLimit, require("./routes/skills"));
+// app.use("/api/experience", apiLimit, require("./routes/experience"));
+// app.use("/api/messages", contactLimit, require("./routes/messages"));
 
-// ── Health Check
+// Health Check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date(), env: process.env.NODE_ENV });
 });
 
-// ── Dashboard Stats (admin)
+// Dashboard Stats (admin)
 const authMiddleware = require("./middleware/auth");
 app.get("/api/stats", authMiddleware, async (req, res) => {
   try {
@@ -84,7 +90,7 @@ app.get("/api/stats", authMiddleware, async (req, res) => {
   }
 });
 
-// ── 404
+// 404
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -92,7 +98,7 @@ app.use((req, res) => {
   });
 });
 
-// ── Global Error Handler
+// Global Error Handler
 app.use((err, req, res, next) => {
   console.error("Server Error:", err.stack || err.message);
   res.status(err.status || 500).json({
@@ -104,7 +110,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ── MongoDB + Boot ───────────────────────────────────────────
+// MongoDB
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(async () => {
@@ -122,7 +128,7 @@ mongoose
     process.exit(1);
   });
 
-// ── Seed on first run ────────────────────────────────────────
+// Seed on first run
 async function seedAdmin() {
   const Admin = require("./models/Admin");
   const Profile = require("./models/Profile");
