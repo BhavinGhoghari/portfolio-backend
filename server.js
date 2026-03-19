@@ -50,18 +50,18 @@ const contactLimit = rateLimit(3, 60 * 1000);
 const apiLimit = rateLimit(60, 60 * 1000);
 
 // Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/profile", require("./routes/profile"));
-app.use("/api/projects", require("./routes/projects"));
-app.use("/api/skills", require("./routes/skills"));
-app.use("/api/experience", require("./routes/experience"));
-app.use("/api/messages", require("./routes/messages"));
-// app.use("/api/auth", strictLimit, require("./routes/auth"));
-// app.use("/api/profile", apiLimit, require("./routes/profile"));
-// app.use("/api/projects", apiLimit, require("./routes/projects"));
-// app.use("/api/skills", apiLimit, require("./routes/skills"));
-// app.use("/api/experience", apiLimit, require("./routes/experience"));
-// app.use("/api/messages", contactLimit, require("./routes/messages"));
+// app.use("/api/auth", require("./routes/auth"));
+// app.use("/api/profile", require("./routes/profile"));
+// app.use("/api/projects", require("./routes/projects"));
+// app.use("/api/skills", require("./routes/skills"));
+// app.use("/api/experience", require("./routes/experience"));
+// app.use("/api/messages", require("./routes/messages"));
+app.use("/api/auth", strictLimit, require("./routes/auth"));
+app.use("/api/profile", apiLimit, require("./routes/profile"));
+app.use("/api/projects", apiLimit, require("./routes/projects"));
+app.use("/api/skills", apiLimit, require("./routes/skills"));
+app.use("/api/experience", apiLimit, require("./routes/experience"));
+app.use("/api/messages", contactLimit, require("./routes/messages"));
 
 // Health Check
 app.get("/api/health", (req, res) => {
