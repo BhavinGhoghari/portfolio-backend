@@ -56,6 +56,7 @@ app.use("/api/projects", require("./routes/projects"));
 app.use("/api/skills", require("./routes/skills"));
 app.use("/api/experience", require("./routes/experience"));
 app.use("/api/messages", require("./routes/messages"));
+app.use("/api/upload", require("./routes/upload"));
 // app.use("/api/auth", strictLimit, require("./routes/auth"));
 // app.use("/api/profile", apiLimit, require("./routes/profile"));
 // app.use("/api/projects", apiLimit, require("./routes/projects"));
